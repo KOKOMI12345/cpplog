@@ -3,7 +3,7 @@
 #include <thread>
 #include <mutex>
 #include <exception>
-
+#include <typeinfo>
 #ifdef _WIN32
 #include <windows.h>
 #include <stdexcept>
@@ -74,4 +74,15 @@ inline std::string getCurrentFileName(std::string filename, bool fullpath = fals
         filename = filename.substr(pos + 1);
     }
     return filename;
+}
+
+template<typename T>
+inline std::string getType(const T& value) {
+    return typeid(value).name();
+}
+
+// 或者使用 std::decay 来处理引用和 cv-qualifiers
+template<typename T>
+inline std::string getType(std::decay_t<T>& value) {
+    return typeid(value).name();
 }
